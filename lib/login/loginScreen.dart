@@ -1,7 +1,12 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:login_reg/authentication/authentication_service.dart';
 import 'package:login_reg/colors.dart';
+import 'package:login_reg/register/registerScreen.dart';
+import 'package:provider/provider.dart';
+
+import '../widgets.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -16,8 +21,9 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade100,
-        body: Column(
+      backgroundColor: Colors.grey.shade100,
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             Container(
               height: MediaQuery.of(context).size.height / 2.5,
@@ -49,69 +55,69 @@ class _LoginState extends State<Login> {
             textField(_email, 'Email', const Icon(Icons.email)),
             const SizedBox(height: 30),
             textField(_password, 'Password', const Icon(Icons.vpn_key_rounded)),
+            const SizedBox(height: 20),
+            const Padding(
+              padding: EdgeInsets.only(right: 40),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text('Forgot your password ?',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey)),
+              ),
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                final provider =
+                    Provider.of<AuthenticationService>(context, listen: false);
+                provider.login(email: _email.text, password: _password.text);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(40),
+                child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        gradient: const LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            secondColor,
+                            firstColor,
+                          ],
+                        )),
+                    child: const Center(
+                      child: Text('LOGIN',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    )),
+              ),
+            )
           ],
-        ));
-  }
-
-  Padding textField(
-      TextEditingController controller, String hintText, Icon icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                  blurRadius: 3,
-                  color: Colors.grey.shade300,
-                  offset: const Offset(0, 3),
-                  spreadRadius: 3)
-            ]),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15),
-          child: TextFormField(
-              controller: controller,
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(top: 15, left: 25),
-                  hintText: hintText,
-                  border: InputBorder.none,
-                  prefixIcon: icon)),
         ),
       ),
-    );
-  }
-
-  Widget logo() {
-    return Container(
-      height: 100,
-      width: 100,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(60),
-          border: Border.all(color: Colors.white, width: 5)),
-      child: Column(
+      floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          bar(),
-          const SizedBox(height: 5),
-          bar(),
-          const SizedBox(height: 5),
-          bar(),
+          const Text('Don\'t have an account ? '),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return const Register();
+              }));
+            },
+            child: const Text(
+              'Register',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+            ),
+          )
         ],
       ),
-    );
-  }
-
-  Widget bar() {
-    return Container(
-      height: 10,
-      width: 60,
-      transform: Matrix4.rotationZ(-.35),
-      transformAlignment: Alignment.center,
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
     );
   }
 }
