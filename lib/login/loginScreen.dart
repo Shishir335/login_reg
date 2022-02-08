@@ -1,10 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:login_reg/authentication/authentication_service.dart';
 import 'package:login_reg/colors.dart';
 import 'package:login_reg/register/registerScreen.dart';
-import 'package:provider/provider.dart';
 
 import '../widgets.dart';
 
@@ -69,11 +67,7 @@ class _LoginState extends State<Login> {
             ),
             const SizedBox(height: 20),
             InkWell(
-              onTap: () {
-                final provider =
-                    Provider.of<AuthenticationService>(context, listen: false);
-                provider.login(email: _email.text, password: _password.text);
-              },
+              onTap: () {},
               child: Padding(
                 padding: const EdgeInsets.all(40),
                 child: Container(
